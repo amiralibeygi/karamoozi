@@ -1,0 +1,254 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        @font-face {
+            font-family: irsans;
+            src: url('../static/fonts/irsans.ttf');
+        }
+        *{
+            font-family: irsans !important;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: irsans !important;
+
+        }
+        #searchResults::-webkit-scrollbar {
+    width: 0;
+  }
+  #searchResults {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          top: 70px;
+          left: -140px;
+          width: 400px;
+          height: auto;
+          max-height: 500px;
+          overflow-y: scroll;
+          background-color: #1a1b1c;
+          z-index: 10;
+        }
+        .header {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background-image: url('/media/images/{{movie.ename}}_backdrop.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .cover{
+            position: absolute;
+            top: 100px;
+            right: 50px;
+            z-index: 10;
+            border-radius: 10px;
+            width: 200px;
+            height: 300px;
+        }
+        .header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .movie-details {
+            position: absolute;
+            top: 140px;
+            right: 280px;
+            color: white;
+            text-align: right;
+            z-index: 10;
+        }
+        .movie-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .movie-country {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .comments-section {
+            padding: 40px;
+        }
+        .comment {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .comment-author {
+            font-weight: bold;
+        }
+        .comment-text {
+            margin-top: 5px;
+        }
+
+
+        .container {
+            background-color: #1a1b1c;
+            padding-top: 40px;
+        }
+
+        .download-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 70%;
+            padding: 40px;
+            margin: 0 auto;
+            gap: 30px;
+            border: 1px solid #575757;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .download-btn {
+            color: white;
+            background-color: #4e4e4e;
+            border: none;
+            outline: none;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        .download-btn:hover {
+            cursor: pointer;
+            background-color: #575757;
+        }
+        p{
+            color: white;
+        }
+        .btn-submit:hover { 
+            cursor: pointer;
+        }
+        a{ 
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                max-width: 600px;
+            }
+            .nav-bar {
+                display: none;
+            }
+            .header {
+                background: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="nav-container" style="background: transparent;position: absolute; top: 0;z-index: 10; display: flex; justify-content: center; width: 100%;;">
+        <div class="nav-bar" style=" background: #1a1b1c7a; border-radius: 90px; padding: 0 60px">
+    
+            <input type="text" id="searchInput" placeholder="جست و جو" style="text-align: right; padding: 8px; background: #262729; outline: none; border: none; border-radius: 3px; color: white;">
+            <div id="searchResults" style="position: absolute;padding: 10px; background: #1a1b1c; max-width: 400px; top: 60px;  border-radius: 20px; max-height: 300px;overflow-y: scroll; scrollbar-width: none;-ms-overflow-style: none; background: transparent; z-index: 10;"></div>
+          <a class="menu-icon" style="text-align: right;background: none; outline: none;border: none;padding: 10xp;margin: 10px; color: wheat; max-height: 200px; overflow-y: scroll;" onclick="toggleMenu()"><i class="fas fa-bars" style="font-size: 16px; color: white; font-weight: bold;padding: 10px;text-align: right;"></i></a>
+    
+            <nav class="nav">
+    
+                <a href="{% url 'login' %}" class="nav-link">ورود</a>
+                <a href="{% url 'movies' %}" class="nav-link">فیلم</a>
+                <a href="{% url 'series' %}" class="nav-link">سریال</a>
+                <a href="{% url 'home' %}" class="nav-link">خانه</a>
+    
+            </nav>
+            
+    
+    
+        </div>
+          {% if user.username %}
+          <a style="display: block; margin-right: 30px;"><i class="fas fa-sign-out-alt"></i></a>
+          {% endif %}
+          <nav class="navbar-list" id="navbarList" >
+            <div style="position:absolute;top:70px; left: 0;background: #1a1b1c;width: 100%; display:  flex; flex-direction: column; justify-content: center; align-items: center;z-index: 10;">
+            <a href="{% url 'login' %}" class="nav-link">ورود</a>
+            <a href="#" class="nav-link">فیلم</a>
+            <a href="#" class="nav-link">سریال</a>
+            <a href="{% url 'home' %}" class="nav-link">خانه</a>
+          </div>
+    
+        </div>
+    {% block content %}
+    
+    {% endblock %}
+
+    <script>
+        const searchInput = document.querySelector('#searchInput');
+    const searchResults = document.querySelector('#searchResults');
+    console.log(searchInput);
+    searchInput.addEventListener('input', function () {
+        const query = searchInput.value.trim();
+        if (query.length > 0) {
+            fetch(`/search/?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    searchResults.innerHTML = '';
+                    console.log(data)
+                    data.forEach(movie => {
+                      console.log(movie)
+                        const resultItem = document.createElement('div');
+                        let category;
+                        if(movie.category == 6){
+                            category = "movie"
+                            resultItem.innerHTML = `
+                            <a href="/detail/${category}/${movie.ename}">
+                            <div style="display: inline-block;  background: #1a1b1c; border-radius: 6px ">
+                                <div style="display: flex; flex-direction: row; text-align:right; padding: 10px; gap: 30px; justify-content: flex-start">
+                                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: flex-start;align-items: start; ">
+                                    <h3 style="color: white">${movie.name}</h3>
+                                    <p style="text-align: right;">کشور : ${movie.country}</p>
+                                    <p>سال : ${movie.year}</p>
+                                    </div>
+                                    <img src="/media/images/${movie.ename}_cover.jpg" style="max-width: 150px; max-height: 250px;">
+                            
+                                </div>
+                            </div>
+                            </a>
+                            `;
+                        }else {
+                            category = "series"
+                            movie = movie[0]
+                            console.log(data)
+                            resultItem.innerHTML = `
+                            <a href="/detail/${category}/${movie.ename}">
+                            <div style="display: inline-block; background: #1a1b1c; border-radius: 20px ">
+                                <div style="display: flex; flex-direction: row; text-align:right; padding: 10px; gap: 30px; justify-content: flex-start">
+                                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: flex-start;align-items: start; ">
+                                    <h3 style="color: white">${movie.name}</h3>
+                                    <p style="text-align: right;">کشور : ${movie.country}</p>
+                                    <p>سال : ${movie.year}</p>
+                                    </div>
+                                    <img src="/media/images/${movie.ename}_cover.jpg" style="max-width: 150px; max-height: 250px;">
+                            
+                                </div>
+                            </div>
+                            </a>
+                            `;
+                            
+                        }
+                        resultItem.style = ""
+                        searchResults.appendChild(resultItem);
+                    });
+                });
+        } else {
+            searchResults.innerHTML = '';
+        }
+    })
+    </script>
+</body>
+</html>

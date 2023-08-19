@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{%block title%}{{movie.name}}{%endblock%}</title>
+    <style>
+        #searchResults::-webkit-scrollbar {
+    width: 0;
+  }
+    </style>
+</head>
+<body>
+    {% block content %}
+    <div class="header">
+        <img class="cover" src="/media/images/{{movie.ename}}_cover.jpg">
+        <div class="movie-details">
+            <div class="movie-title" style="font-size: 26px;">{{movie.name}}</div>
+            <div class="movie-country" style="font-size: 16px;">کشور : {{movie.country}}</div>
+            <div class="movie-country" style="font-size: 16px;">زمان : {{movie.duration}} دقیقه</div>
+                    <p> ژانر : {% for genre in movie.genre.all %}{{ genre.name }} {% endfor %}  </p>
+                    <div class="movie-country" style="font-size: 16px;"></div>
+            <div class="movie-actors" style="font-size: 16px; display: flex; justify-content: end;"> {{movie.actors}} <p>  :  بازیگران  </p> </div>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="about" style=" justify-content: flex-end;text-align: right; color: white; width: 86%;">
+            <h1 style="padding-bottom: 20px;">درباره فیلم</h1>
+            <p style="display: inline-block;justify-content: flex-end;text-align: right; color: white; width: 82%; padding-right: 40px; padding-bottom: 30px;">{{movie.description}}</p>
+        </div>
+        <div class="download-box" style="position: relative;">
+        <legend style="position: absolute; top: -15px; right: 20px;background-color: #1a1b1c;color: white;">باکس دانلود</legend>
+
+            <div class="row">
+                <div class="download-options">
+                    <button class="download-btn">سرور ۱</button>
+                    <button class="download-btn">سرور ۲</button>
+                </div>
+                <p>کیفیت 720</p>
+
+            </div>
+            <div class="row">
+                <div class="download-options">
+                    <button class="download-btn">سرور ۱</button>
+                    <button class="download-btn">سرور ۲</button>
+                </div>
+                <p>کیفیت 1080</p>
+
+            </div>
+        </div>
+        <div class="add_comment" style="display: flex; justify-content: center; align-items: center; width: 70%; margin: 0 auto; padding-top: 60px; position: relative; padding-bottom: 30px;">
+            <h3 style="color: white; position: absolute; top: 20px ; right: 20px;">افزودن نظر</h3>
+            {% if user.username %}
+            <form method="post" action="{% url 'add_comment' movie.category.name movie.ename  %}" style="display: flex; flex-direction: column;justify-content: center; align-items: center; margin: 0 auto;">
+
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{ request.user.id }}">
+                <input type="hidden" name="category" value="{{ movie.chategory.name }}">
+                <textarea name="comment" id="comment"  cols="100" rows="4" style="background-color: transparent; color: white; text-align: right; margin: 15px; padding: 20px;"></textarea><br>
+                <button type="submit" class="btn-submit" style="border: none; outline: none; background-color: #575757; padding: 15px; border-radius: 15px;">ثبت نظر</button>
+              </form>
+            {% else %}
+            <form method="post" action="{% url 'add_comment' movie.category.name movie.ename  %}" style="display: flex; flex-direction: column;justify-content: center; align-items: center; margin: 0 auto;" aria-disabled="true">
+
+                {% csrf_token %}
+                <input type="hidden" name="user" value="{{ request.user.id }}">
+                <input type="hidden" name="category" value="{{ movie.chategory.name }}">
+                <textarea name="comment" id="comment"  cols="100" rows="4" style="background-color: transparent; color: white; text-align: right; margin: 15px; padding: 20px;"></textarea><br>
+                <button type="submit" class="btn-submit" style="border: none; outline: none; background-color: #575757; padding: 15px; border-radius: 15px;">ثبت نظر</button>
+              </form>
+              {% endif %}
+
+        </div>
+        
+    <div class="comments-section" style="border-top: 1px solid #575757;">
+        {% for comment in comments %}
+            <div class="card-comment" style="padding-bottom: 20px;">
+                <div class="upper" style="display: flex; justify-content: space-between;color: white; padding: 15px;">
+                    <div class="date">
+                        {{comment.created_at}}
+                    </div>
+                    <div class="username">
+                        {{comment.user}}
+                    </div>
+                    
+                </div>
+                <div class="text">
+                    <p style="color: white; text-align: right;padding-right: 25px;">{{comment.text}}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+        <!-- Add more comments here -->
+    </div>
+    {% endblock %}
+</body>
+</html>

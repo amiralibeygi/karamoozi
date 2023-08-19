@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{movie.name}}</title>
+    <style>
+        @font-face {
+        font-family: irsans;
+        src: url('/static/fonts/irsans.ttf');
+        }
+
+        * {
+            margin: 0 ;
+            padding: 0;
+            font-family: irsans;
+            scroll-behavior: smooth;
+            background: #1a1b1c;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .cover {
+            width: 100%;
+            height: 600px;
+            background: url('/media/images/{{movie.ename}}_cover.jpg') center/cover no-repeat;
+        }
+        .details {
+            padding: 20px;
+        }
+        .download-box {
+            background: #f0f0f0;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .comments {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .comment {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #ccc;
+        }
+        .btn {
+            color: white;
+            transition: 0.5s;
+
+        }
+        button:hover{
+            background: #6a6b6b;
+            cursor: pointer;
+        }
+        .card-comment {
+            background-color: #575757;
+        }
+    </style>
+</head>
+<body>
+    <div class="cover"></div>
+    <div class="details" style="background: #1a1b1c;">
+        <h1 style="text-align: right;color: white;padding-bottom: 10px;">{{movie.name}}</h1>
+        <p style="text-align: right; color: white;">سال : {{movie.year}}</p>
+        <p style="text-align: right; color: white;">مدت : {{movie.duration}} دقیقه</p>
+        <p style="text-align: right; color: white;">کارگردان : {{movie.director}}</p>
+        <p style="text-align: right; color: white;">درباره : {{movie.description}}</p>
+    </div>
+    <div class="download-box" style="background: #1a1b1c;width: 100%; display: flex;flex-direction: column; text-align: right; ">
+        <h2 style="color: white; margin-right: 50px;">باکس دانلود</h2>
+        <div style="display: flex; justify-content: space-between;align-items: center;width: 90%;">
+            <div class="btns" style="display: flex; gap:12px">
+                <button  class="btn" style=" background: #333434; padding: 10px; border-radius: 6px;outline: none; border: none;">سرور ۱</button>
+                <button class="btn" style=" background: #333434; padding: 10px; border-radius: 6px;outline: none; border: none;">سرور ۲</button>
+            </div>
+                <div><p style="color: white;">دانلود با کیفیت 1080</p></div>
+        </div>
+    </div>
+    <div class="add_comment" style="display: flex; justify-content: center; align-items: center; width: 70%; margin: 0 auto; padding-top: 60px; position: relative; padding-bottom: 30px;">
+        <h3 style="color: white; position: absolute; top: 20px ; right: 20px;">افزودن نظر</h3>
+        {% if user.username %}
+        <form method="post" action="{% url 'add_comment' movie.category.name movie.ename  %}" style="display: flex; flex-direction: column;justify-content: center; align-items: center; margin: 0 auto;">
+
+            {% csrf_token %}
+            <input type="hidden" name="user" value="{{ request.user.id }}">
+            <input type="hidden" name="category" value="{{ movie.chategory.name }}">
+            <textarea name="comment" id="comment"  cols="45" rows="4" style="background-color: transparent; color: white; text-align: right; margin: 15px; padding: 20px;"></textarea><br>
+            <button type="submit" class="btn-submit" style="border: none; outline: none; background-color: #333434; padding: 15px; border-radius: 15px;color: white;">ثبت نظر</button>
+          </form>
+        {% else %}
+        <form method="post" action="{% url 'add_comment' movie.category.name movie.ename  %}" style="display: flex; flex-direction: column;justify-content: center; align-items: center; margin: 0 auto;" aria-disabled="true">
+
+            {% csrf_token %}
+            <input type="hidden" name="user" value="{{ request.user.id }}">
+            <input type="hidden" name="category" value="{{ movie.chategory.name }}">
+            <textarea name="comment" id="comment"  cols="100" rows="4" style="background-color: transparent; color: white; text-align: right; margin: 15px; padding: 20px;"></textarea><br>
+            <button type="submit" class="btn-submit" style="border: none; outline: none; background-color: #333434; padding: 15px; border-radius: 15px; color: white;">ثبت نظر</button>
+          </form>
+          {% endif %}
+
+    </div>
+    <div class="comments" style="background: #1a1b1c;">
+        <h2 style="color: white; text-align: right; margin-right: 15px;">نظرات</h2>
+        <div class="comments-section" style="border-top: 1px solid #575757;">
+            {% for comment in comments %}
+                <div class="card-comment" style="background-color: #333434 !important;border-top: 1px solid #575757;">
+                    <div class="upper" style="display: flex; justify-content: space-between;color: white; padding: 15px;">
+                        <div class="date">
+                            <p style="color: #979797;">{{comment.created_at}}</p>
+                        </div>
+                        <div class="username">
+                            <p style="color: #979797;">{{comment.user}} کاربر</p> 
+                        </div>
+                        
+                    </div>
+                    <div class="text">
+                        <p style="color: white; text-align: right;padding-right: 25px;padding-bottom: 30px;">{{comment.text}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        </div>
+
+    </div>
+</body>
+</html>

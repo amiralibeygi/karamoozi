@@ -1,0 +1,155 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" >
+    <style>
+        @font-face {
+            font-family: irsans;
+            src: url(../static/fonts/irsans.ttf);
+        }
+        *{
+            font-family: irsans
+
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url("{% static 'images/login-back.webp' %}");
+            margin: 0 auto;
+        }
+        h2 {
+            color: white;
+            text-align: center;
+        }
+        .signup-container {
+            background: #1a1b1c;
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+            width: 400px;
+            justify-content: space-around;
+            align-items: stretch;
+            gap: 40px;
+            border-radius: 20px;
+            padding: 30px;
+            filter: opacity(0.9);
+        
+        }
+        h1 {
+            color: white;
+        }
+        input#s_username {
+            background-color: #303133;
+            outline: none;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 20px;
+            width: 60%;
+            text-align: right;
+        }
+        input#s_password {
+            background-color: #303133;
+            outline: none;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 20px;
+            text-align: right;
+            width: 60%;
+        }
+        input#s_email {
+            background-color: #303133;
+            outline: none;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 20px;
+            text-align: right;
+            width: 60%;
+        }
+
+        input[type='file'] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            background-color: #303133;
+            display: inline-block;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        textarea#bio {
+            background-color: #303133;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            padding: 5px;
+            text-align: right;
+        }
+        textarea#bio:focus {
+            outline: none;
+            border: none;
+        }
+
+        .error_wrong_up {
+            color: red;
+        }
+
+        #submit-btn {
+            background: #1a1b1c;
+            color: white;
+            border: none;
+            transition: 0.5s;
+            padding: 15px;
+            border-radius: 15px;
+            width: 100%;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #submit-btn:hover {
+            background: #303133;
+            cursor: pointer;
+            
+        }
+        p{
+            color: white;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="signup-container">
+    <h2>ساخت حساب کاربری</h2>
+
+    <form method="post"  class="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="display: flex; align-items: center;gap: 15px;">
+            <input type="text" name="username" id="s_username" placeholder="نام کاربری خود را وارد کنید" required> <p>  نام کاربری</p>
+        </div>
+
+        <div style="display: flex; align-items: center;gap: 15px;">
+            <input type="password" name="password" id="s_password" required placeholder="رمز عبور خود را وارد کنید"> <p>   رمز عبور</p>
+        </div>
+        <button type="submit" id="submit-btn">ثبت نام</button>
+        <p style="font-size: 12px;">ثبت نام کرده اید؟ هم اکنون <a href="/login">وارد</a> شوید</p>
+
+    </form>
+</div>
+</body>
+</html>

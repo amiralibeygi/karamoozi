@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        @font-face {
+            font-family: irsans;
+            src: url(/static/fonts/irsans.ttf);
+        }
+        *{
+            font-family: irsans
+
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url("{% static 'images/login-back.webp' %}");
+            background-blend-mode: saturation;
+            margin: 0 auto;
+        }
+        
+        .login-container {
+            background: #1a1b1c;
+            display: flex;
+            flex-direction: column;
+            height: 300px;
+            width: 400px;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            border-radius: 20px;
+            padding: 50px;
+            filter: opacity(0.9);
+        
+        }
+        h1 {
+            color: white;
+        }
+        input#l_username {
+            background-color: #303133;
+            outline: none;
+            border: none;
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            width: 60%;
+            text-align: right;
+        }
+        input#l_password {
+            background-color: #303133;
+            outline: none;
+            border: none;
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: right;
+            width: 60%;
+        }
+
+        .error_wrong_up {
+            color: red;
+        }
+
+        #submit-btn {
+            background: #1a1b1c;
+            color: white;
+            border: none;
+            transition: 0.5s;
+            padding: 15px;
+            border-radius: 15px;
+            width: 100%;
+        }
+
+        .form {
+            display: flex;
+
+            flex-direction: column;gap: 20px;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+
+        }
+
+        #submit-btn:hover {
+            background: #303133;
+            cursor: pointer;
+            
+        }
+        p {
+            font-size: 16px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+<h1>وارد حساب خود شوید</h1>
+
+<form method="post" class="form">
+    {% csrf_token %}
+    <div style="display: flex; align-items: center;gap: 15px;">
+        <input type="text" name="username" id="l_username" placeholder="نام کاربری خود را وارد کنید"> <p>  نام کاربری</p>
+    
+    </div>
+    <div style="display: flex; align-items: center;gap: 15px;">
+
+        <input type="password" name="password" id="l_password" placeholder="رمز عبور خود را وارد کنید"><p> رمز عبور  </p>
+
+    </div>
+    <button type="submit" id="submit-btn">ورود</button>
+    <p style="font-size: 12px;">ثبت نام نکرده اید؟ هم اکنون <a href="/accounts/signup">ثبت نام</a> کنید</p>
+    <p class="error_wrong_up">{{message}}</p>
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فیلم یاب</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+<style>
+  a {
+    text-decoration: none;
+    color: burlywood;
+  }
+  
+  .upcomming-image {
+    padding-bottom: 10px;
+  }
+
+
+  .rows {
+    display: flex;
+    flex-direction: column;
+  }
+  #searchResults::-webkit-scrollbar {
+    width: 0;
+  }
+  #searchResults {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          top: 70px;
+          left: -140px;
+          width: 400px;
+          height: auto;
+          max-height: 500px;
+          overflow-y: scroll;
+          background-color: #1a1b1c;
+          z-index: 10;
+        }
+  body::-webkit-scrollbar-thumb {
+            background: transparent;
+  }
+  body::-webkit-scrollbar-track {
+      background: transparent;
+  }
+
+</style>
+</head>
+<body>
+    <div class="nav-container">
+    <div class="nav-bar">
+
+      <input type="text" id="searchInput" placeholder="جست و جو" style="text-align: right; padding: 8px; background: #262729; outline: none; border: none; border-radius: 3px; color: white;">
+      <div id="searchResults" style="position: absolute;padding: 10px; background: #1a1b1c; max-width: 400px; top: 60px;  border-radius: 20px; max-height: 300px;overflow-y: scroll; scrollbar-width: none;-ms-overflow-style: none; background: transparent; z-index: 10;"></div>
+    <a class="menu-icon" style="text-align: right;background: none; outline: none;border: none;padding: 10xp;margin: 10px; color: wheat; max-height: 200px; overflow-y: scroll;" onclick="toggleMenu()"><i class="fas fa-bars" style="font-size: 16px; color: white; font-weight: bold;padding: 10px;text-align: right;"></i></a>
+      <a class="menu-icon" style="text-align: right;background: none; outline: none;border: none;padding: 10xp;margin: 10px; color: wheat;" onclick="toggleMenu()"><i class="fas fa-bars" style="font-size: 16px; color: white; font-weight: bold;padding: 10px;text-align: right;"></i></a>
+
+        <nav class="nav">
+
+            <a href="{% url 'login' %}" class="nav-link">ورود</a>
+            <a href="{% url 'movies' %}" class="nav-link">فیلم</a>
+            <a href="{% url 'series' %}" class="nav-link">سریال</a>
+            <a href="{% url 'home' %}" class="nav-link">خانه</a>
+
+        </nav>
+        
+
+        <h1 class="website-name" style="color: white;">فیلم یاب</h1>
+
+    </div>
+      {% if user.username %}
+      <a style="display: block; margin-right: 30px;"><i class="fas fa-sign-out-alt"></i></a>
+      {% endif %}
+      <nav class="navbar-list" id="navbarList" >
+        <div style="position:absolute;top:70px; left: 0;background: #1a1b1c;width: 100%; display:  flex; flex-direction: column; justify-content: center; align-items: center;z-index: 10;">
+        <a href="{% url 'login' %}" class="nav-link">ورود</a>
+        <a href="#" class="nav-link">فیلم</a>
+        <a href="#" class="nav-link">سریال</a>
+        <a href="#" class="nav-link">خانه</a>
+      </div>
+
+    </div>
+
+    <div class="back">
+        <div class="main">
+            <div class="upcomming">
+                <div class="upcomming-card">
+                    <div class="upcomming-image">
+                        <img src="{% static 'images/upcomming.jpeg' %}" alt="">
+                        <div class="countdown"><h2 id="time"></h2></div>
+                    </div>
+                    <div class="title">
+                        <p class="upcomming-title" style="text-align: center; background-color: #343637;">اونجرز پایان بازی</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 400px;">
+                  <p style="text-align: right; color: white;
+                  padding: 30px;">محدود سازی</p>
+                  <div class="genres" style="margin: 30px;display: flex; flex-wrap: wrap;gap:8px">
+                  {% for genre in genres %}
+                    <a href="{% url 'genre' genre.id %}"><button style="background: #343637; padding: 10px; color: white; border: none; outline: none;">{{genre.name}}</button></a>
+                  {% endfor %}
+                  </div>
+                </div>
+            </div>
+            
+            <div class="movie-container">
+                {% if message %}
+                <p style="color: rgb(244, 93, 93);">{{message}}</p>
+                {% endif %}
+                {% for show in shows %}
+                <div class="movie-card">
+                    
+                  <div class="movie-info">
+                    <h2 class="movie-title"><a href="detail/{{show.category.name}}/{{show.ename}}" style="color: white; text-decoration: none;">{{show.name}}</a></h2>
+                    <p>{{show.rating}} : امتیاز  </p>
+                    <p> ژانر : {% for genre in show.genre.all %}{{ genre.name }}{% endfor %}  </p>
+                    <p> بازیگران :{{show.actors}} </p> 
+                    <p> کارگردان :{{show.director}}  </p>
+                    <p> کشور‌ : {{show.country}}   </p>
+                    <p>درباره : {{show.description}}</p>
+                    <!-- Add more movie information here -->
+                  </div>
+
+                  <div class="image-section">
+                    <a href="detail/{{show.category.name}}/{{show.ename}}" style="color: white; text-decoration: none;"><img src="/media/images/{{ show.ename }}_cover.jpg" style="max-width: 200px; height: 300px;"></a>
+                    </div>
+              </div>
+                {% endfor %}
+              
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Add more movies here -->
+
+  </div>
+  <footer style="display: flex; justify-content: center; align-items: center;background-color: #1a1b1c;vertical-align: middle; padding-top: 20px; padding-bottom: 40px;">
+
+    <p style="text-align: center; color: white;">&copy; طراحی توسط امیرعلی بیگی</p>
+  </footer>
+
+  <script>
+    const releaseDate = new Date('2023-08-31T00:00:00'); // Replace with the actual release date
+
+    function updateCountdown() {
+      const now = new Date();
+      const timeDifference = releaseDate - now;
+
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+      document.getElementById('time').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // dropdown menu
+    function toggleMenu() {
+    var navbarList = document.getElementById("navbarList");
+    if (navbarList.className === "navbar-list") {
+      navbarList.className += " responsive";
+    } else {
+      navbarList.className = "navbar-list";
+    }
+  }
+
+
+    // live search
+    const searchInput = document.querySelector('#searchInput');
+    const searchResults = document.querySelector('#searchResults');
+    console.log(searchInput);
+    searchInput.addEventListener('input', function () {
+        const query = searchInput.value.trim();
+        if (query.length > 0) {
+            fetch(`/search/?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    searchResults.innerHTML = '';
+                    console.log(data)
+                    data.forEach(movie => {
+                      console.log(movie)
+                        const resultItem = document.createElement('div');
+                        let category;
+                        if(movie.category == 6){
+                            category = "movie"
+                            resultItem.innerHTML = `
+                            <a href="/detail/${category}/${movie.ename}">
+                            <div style="display: inline-block;  background: #1a1b1c; border-radius: 4px ">
+                                <div style="display: flex; flex-direction: row; text-align:right; padding: 10px; gap: 30px; justify-content: flex-start">
+                                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: flex-start;align-items: start; ">
+                                    <h3 style="color: white">${movie.name}</h3>
+                                    <p style="text-align: right;">کشور : ${movie.country}</p>
+                                    <p>سال : ${movie.year}</p>
+                                    </div>
+                                    <img src="/media/images/${movie.ename}_cover.jpg" style="max-width: 150px; max-height: 250px;">
+                            
+                                </div>
+                            </div>
+                            </a>
+                            `;
+                        }else {
+                            category = "series"
+                            movie = movie[0]
+                            console.log(data)
+                            resultItem.innerHTML = `
+                            <a href="/detail/${category}/${movie.ename}">
+                            <div style="display: inline-block; background: #1a1b1c; border-radius: 20px ">
+                                <div style="display: flex; flex-direction: row; text-align:right; padding: 10px; gap: 30px; justify-content: flex-start">
+                                    <div style="display: flex; flex-direction: column; text-align: right; justify-content: flex-start;align-items: start; ">
+                                    <h3 style="color: white">${movie.name}</h3>
+                                    <p style="text-align: right;">کشور : ${movie.country}</p>
+                                    <p>سال : ${movie.year}</p>
+                                    </div>
+                                    <img src="/media/images/${movie.ename}_cover.jpg" style="max-width: 150px; max-height: 250px;">
+                            
+                                </div>
+                            </div>
+                            </a>
+                            `;
+                            
+                        }
+                        resultItem.style = ""
+                        searchResults.appendChild(resultItem);
+                    });
+                });
+        } else {
+            searchResults.innerHTML = '';
+        }
+    })
+  </script>
+</body>
+</html>
