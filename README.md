@@ -1,60 +1,21 @@
-# Project Title
-
-Project description goes here.
-
-## Features
-
-- Feature 1
-- Feature 2
-- ...
-
-## Screenshots
-
-![Screenshot 1](/images/screenshot1.png)
-![Screenshot 2](/images/screenshot2.png)
-
-## Demo
-
-![Demo GIF](/gifs/demo.gif)
-
-## Installation
-
-1. Clone the repository.
-2. Install dependencies by running: `npm install`
-
-## Usage
-
-Explain how to use the project.
-
-## Contributing
-
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature-name`
-3. Make changes and commit: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin feature-name`
-5. Create a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
 
 <div dir="rtl">
 
-# عنوان پروژه
+# کارآموزی
 
-توضیحات پروژه در اینجا قرار می‌گیرد.
+طراحی وبسایت فیلم برای کارآموزی نیسمال بهمن 1402
+
+![تصویر 1](/images/screenshot1.png)
 
 ## ویژگی‌ها
 
-- ویژگی 1
-- ویژگی 2
+- قابلیت جست و جوی انگلیسی فیلم و سریال
+- قابلیت جست و جوی فارسی فیلم و سریال
 - ...
 
 ## تصاویر
 
-![تصویر 1](/images/screenshot1.png)
+
 ![تصویر 2](/images/screenshot2.png)
 
 ## نمایش
