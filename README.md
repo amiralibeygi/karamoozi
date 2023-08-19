@@ -6,6 +6,8 @@
 طراحی وبسایت فیلم برای کارآموزی نیسمال بهمن 1402
 
 ![تصویر 1](/images/screenshot1.png)
+![GIF نمایشی][(/gifs/demo.gif](https://github.com/amiralibeygi/karamoozi/blob/main/files/english_search.gif))
+
 
 ## ویژگی‌ها
 
@@ -20,7 +22,6 @@
 
 ## نمایش
 
-![GIF نمایشی](/gifs/demo.gif)
 
 ## نصب
 
